@@ -45,7 +45,7 @@ def get_conn_sql_service(result=1):
             #f"Encrypt=yes;"
             #f"TrustServerCertificate=no;",
             f"Authentication=ActiveDirectoryMsi;",
-            attrs_before={"AccessToken": token.token}
+            attrs_before={"AccessToken": token}
         )      
         
         if result == 1:
