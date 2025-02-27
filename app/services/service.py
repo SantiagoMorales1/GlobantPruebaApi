@@ -19,17 +19,20 @@ from app.conn.conn import STORAGE_ACCOUNT, CONTAINER, SERVER, DATABASE, UID, PWD
 def get_conn_blob():
 
     #USING CON MANGMENT IDNETITY
+    #credential = DefaultAzureCredential()
     credential = ManagedIdentityCredential()
     account_url = f"https://{STORAGE_ACCOUNT}.blob.core.windows.net"
     blob_service_client = BlobServiceClient(account_url, credential)
     
     return blob_service_client
 
+
 def get_conn_sql_service(result=1):
 
     try:
         # Get Azure AD token
-        credential = DefaultAzureCredential()
+        #credential = DefaultAzureCredential()
+        credential = ManagedIdentityCredential()
         token = credential.get_token("https://database.windows.net/.default").token
 
         # Connect using pyodbc
@@ -40,7 +43,8 @@ def get_conn_sql_service(result=1):
             f"UID={UID};"
             f"PWD={PWD};"
             f"Encrypt=yes;"
-            f"TrustServerCertificate=no;"
+            f"TrustServerCertificate=no;",
+            attrs_before={"AccessToken": token.token}
         )      
         
         if result == 1:
