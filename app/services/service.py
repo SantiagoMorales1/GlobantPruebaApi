@@ -44,7 +44,7 @@ def get_conn_sql_service(result=1):
             #f"PWD={PWD};"
             #f"Encrypt=yes;"
             #f"TrustServerCertificate=no;",
-            f"Authentication=ActiveDirectoryMsi;",
+            #f"Authentication=ActiveDirectoryMsi;",
             attrs_before={"AccessToken": token}
         )      
         
