@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+uvicorn[standard]
+gunicorn
+azure-identity
+azure-storage-blob
+pandas
+sqlalchemy
+pyodbc
