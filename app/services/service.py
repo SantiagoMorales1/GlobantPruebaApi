@@ -31,29 +31,27 @@ def get_conn_sql_service(result=1):
 
     try:
         # Get Azure AD token
-        #credential = DefaultAzureCredential()
         credential = ManagedIdentityCredential()
         token = credential.get_token("https://database.windows.net/.default").token
 
-        # Connect using pyodbc
+        # Connect using pyodbc with Managed Identity
         conn = pyodbc.connect(
             f"DRIVER={{ODBC Driver 18 for SQL Server}};"
-            f"SERVER=tcp:{SERVER};"
+            f"SERVER=tcp:{SERVER},1433;"  # Ensure port 1433 is included
             f"DATABASE={DATABASE};"
-            f"UID={UID};"
-            f"PWD={PWD};"
             f"Encrypt=yes;"
-        #    f"TrustServerCertificate=no;",
-        #    attrs_before={"AccessToken": token}
-        )      
-        
+            f"TrustServerCertificate=no;"
+            f"Authentication=ActiveDirectoryMsi;",  # Correct authentication method
+            attrs_before={"AccessToken": token}  # Ensure token is passed correctly
+        )
+
         if result == 1:
-            return {"Connection OK"}
+            return {"status": "Connection OK"}
         else:
             return conn
-            
+
     except Exception as e:
-        print(f"Connection failed: {e}")
+        return {"error": f"Connection failed: {str(e)}"}
 
 
 #Estructuras de archivos
