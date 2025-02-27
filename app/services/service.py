@@ -18,7 +18,7 @@ from app.conn.conn import STORAGE_ACCOUNT, CONTAINER, SERVER, DATABASE, UID, PWD
 def get_conn_blob():
 
     #USING CON MANGMENT IDNETITY
-    credential = DefaultAzureCredential()
+    credential = ManagedIdentityCredential()
     account_url = f"https://{STORAGE_ACCOUNT}.blob.core.windows.net"
     blob_service_client = BlobServiceClient(account_url, credential)
     
