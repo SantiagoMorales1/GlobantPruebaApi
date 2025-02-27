@@ -7,6 +7,7 @@ import pandas as pd
 
 from azure.storage.blob import BlobServiceClient
 from azure.identity import DefaultAzureCredential
+from azure.identity import ManagedIdentityCredential
 
 import pyodbc
 from sqlalchemy import create_engine
