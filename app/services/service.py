@@ -39,10 +39,10 @@ def get_conn_sql_service(result=1):
         conn = pyodbc.connect(
             f"DRIVER={{ODBC Driver 18 for SQL Server}};"
             f"SERVER=tcp:{SERVER};"
-            f"DATABASE={DATABASE};",
+            f"DATABASE={DATABASE};"
             f"UID={UID};"
             f"PWD={PWD};"
-            f"Encrypt=yes;",
+            f"Encrypt=yes;"
         #    f"TrustServerCertificate=no;",
         #    attrs_before={"AccessToken": token}
         )      
