@@ -36,22 +36,21 @@ def get_conn_sql_service(result=1):
         token = credential.get_token("https://database.windows.net/.default").token
 
         # Connect using pyodbc
-        #conn = pyodbc.connect(
-        #    f"DRIVER={{ODBC Driver 18 for SQL Server}};"
-        #    f"SERVER=tcp:{SERVER};"
-        #    f"DATABASE={DATABASE};",
-            #f"UID={UID};"
-            #f"PWD={PWD};"
-            #f"Encrypt=yes;"
-            #f"TrustServerCertificate=no;",
-            #f"Authentication=ActiveDirectoryMsi;",
+        conn = pyodbc.connect(
+            f"DRIVER={{ODBC Driver 18 for SQL Server}};"
+            f"SERVER=tcp:{SERVER};"
+            f"DATABASE={DATABASE};",
+            f"UID={UID};"
+            f"PWD={PWD};"
+            f"Encrypt=yes;",
+        #    f"TrustServerCertificate=no;",
         #    attrs_before={"AccessToken": token}
-        #)      
+        )      
         
         if result == 1:
-            return token #{"Connection OK"}
+            return {"Connection OK"}
         else:
-            return 0 #conn
+            return conn
             
     except Exception as e:
         print(f"Connection failed: {e}")
