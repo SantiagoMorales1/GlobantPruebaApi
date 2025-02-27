@@ -10,6 +10,7 @@ from azure.identity import DefaultAzureCredential
 from azure.identity import ManagedIdentityCredential
 
 import pyodbc
+from pyodbc import SQL_COPT_SS_ACCESS_TOKEN
 from sqlalchemy import create_engine
 
 from app.conn.conn import STORAGE_ACCOUNT, CONTAINER, SERVER, DATABASE, UID, PWD
@@ -43,7 +44,7 @@ def get_conn_sql_service(result=1):
             f"Encrypt=yes;"
             f"TrustServerCertificate=no;"
             f"Authentication=ActiveDirectoryMsi;",  # Correct authentication method
-            attrs_before={pyodbc.SQL_COPT_SS_ACCESS_TOKEN: access_token_bytes}  # Ensure token is passed correctly
+            attrs_before={SQL_COPT_SS_ACCESS_TOKEN: access_token_bytes}  # Ensure token is passed correctly
         )
 
         if result == 1:
