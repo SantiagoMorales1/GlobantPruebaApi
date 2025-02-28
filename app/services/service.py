@@ -4,6 +4,7 @@ from pathlib import Path
 import io
 import numpy as np
 import pandas as pd
+import logging
 
 from azure.storage.blob import BlobServiceClient
 from azure.identity import DefaultAzureCredential
@@ -15,6 +16,8 @@ from sqlalchemy import create_engine
 from app.conn.conn import STORAGE_ACCOUNT, CONTAINER, SERVER, DATABASE, UID, PWD
 
 #Conexion a Azure sotrage account
+
+logger = logging.getLogger(__name__)
 
 def get_conn_blob():
 
@@ -30,6 +33,7 @@ def get_conn_blob():
 def get_conn_sql_service(result=1):
 
     try:
+        logger.info("Starting database connection...")
         # Get Azure AD token
         credential = ManagedIdentityCredential()
         token = credential.get_token("https://database.windows.net/.default").token
@@ -45,12 +49,15 @@ def get_conn_sql_service(result=1):
             attrs_before={1256: access_token_bytes}  # Ensure token is passed correctly
         )
 
+        logger.info("Database connection successful.")
+
         if result == 1:
             return {"status": "Connection OK"}
-        else:
+        else:            
             return conn
 
     except Exception as e:
+        logger.error(f"Connection failed: {str(e)}", exc_info=True)
         return {"error": f"Connection failed: {str(e)}"}
 
 
