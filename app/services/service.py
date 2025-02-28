@@ -48,9 +48,7 @@ def get_conn_sql_service(result=1):
             #f"TrustServerCertificate=no;",  
             #f"Authentication=ActiveDirectoryMsi",
             attrs_before={1256: access_token_bytes}  # Ensure token is passed correctly
-        )
-
-        logger.info("Database connection successful.")
+        )       
 
         if result == 1:
             conn.close()
@@ -58,8 +56,7 @@ def get_conn_sql_service(result=1):
         else:            
             return conn
 
-    except Exception as e:
-        logger.error(f"Connection failed: {str(e)}", exc_info=True)
+    except Exception as e:        
         return {"error": f"Connection failed: {str(e)}"}
 
 
