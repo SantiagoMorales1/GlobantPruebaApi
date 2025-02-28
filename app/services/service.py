@@ -35,9 +35,9 @@ def get_conn_sql_service(result=1):
     try:
       
         # Get Azure AD token
-        #credential = ManagedIdentityCredential()
-        #token = credential.get_token("https://database.windows.net/.default").token
-        #access_token_bytes = token.encode("utf-16-le") 
+        credential = ManagedIdentityCredential()
+        token = credential.get_token("https://database.windows.net/.default").token
+        access_token_bytes = token.encode("utf-16-le") 
 
         # Connect using pyodbc with Managed Identity
         conn = pyodbc.connect(
@@ -46,8 +46,8 @@ def get_conn_sql_service(result=1):
             f"DATABASE={DATABASE};"
             #f"Encrypt=yes;"
             #f"TrustServerCertificate=no;",  
-            f"Authentication=ActiveDirectoryMsi"
-            #attrs_before={1256: access_token_bytes}  # Ensure token is passed correctly
+            f"Authentication=ActiveDirectoryMsi",
+            attrs_before={1256: access_token_bytes}  # Ensure token is passed correctly
         )
 
         logger.info("Database connection successful.")
