@@ -33,20 +33,21 @@ def get_conn_blob():
 def get_conn_sql_service(result=1):
 
     try:
-        logger.info("Starting database connection...")
+      
         # Get Azure AD token
-        credential = ManagedIdentityCredential()
-        token = credential.get_token("https://database.windows.net/.default").token
-        access_token_bytes = token.encode("utf-16-le") 
+        #credential = ManagedIdentityCredential()
+        #token = credential.get_token("https://database.windows.net/.default").token
+        #access_token_bytes = token.encode("utf-16-le") 
 
         # Connect using pyodbc with Managed Identity
         conn = pyodbc.connect(
             f"DRIVER={{ODBC Driver 18 for SQL Server}};"
             f"SERVER=tcp:{SERVER},1433;"  # Ensure port 1433 is included
             f"DATABASE={DATABASE};"
-            f"Encrypt=yes;"
-            f"TrustServerCertificate=no;",    
-            attrs_before={1256: access_token_bytes}  # Ensure token is passed correctly
+            #f"Encrypt=yes;"
+            #f"TrustServerCertificate=no;",  
+            f"Authentication=ActiveDirectoryMsi"
+            #attrs_before={1256: access_token_bytes}  # Ensure token is passed correctly
         )
 
         logger.info("Database connection successful.")
