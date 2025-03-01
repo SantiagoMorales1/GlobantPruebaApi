@@ -45,8 +45,8 @@ def get_conn_sql_service(result=1):
             f"SERVER=tcp:{SERVER},1433;"  # Ensure port 1433 is included
             f"DATABASE={DATABASE};"
             #f"Encrypt=yes;"
-            #f"TrustServerCertificate=no;",  
-            f"Authentication=ActiveDirectoryMsi",
+            f"TrustServerCertificate=no;",  
+            #f"Authentication=ActiveDirectoryMsi",
             attrs_before={1256: access_token_bytes}  # Ensure token is passed correctly
         )       
 
