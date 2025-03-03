@@ -13,7 +13,7 @@ from azure.identity import ManagedIdentityCredential
 import pyodbc
 from sqlalchemy import create_engine
 
-from app.conn.conn import DRIVER, STORAGE_ACCOUNT, CONTAINER, SERVER, DATABASE, UID, PWD
+from app.conn.conn import DRIVER, STORAGE_ACCOUNT, CONTAINER, SERVER, DATABASE, UID, PWD, CONN_STR
 
 #Conexion a Azure sotrage account
 
@@ -41,19 +41,10 @@ def get_conn_sql_service(result=1):
 
         # Connect using pyodbc with Managed Identity
 
-
         conn = pyodbc.connect(
-            f"Driver={DRIVER};"
-            f"Server={SERVER};"
-            f"Database={DATABASE};"
-            f"Uid={UID};"
-            f"Pwd={PWD};"
-            f"Encrypt=yes;"
-            f"TrustServerCertificate=no;"
-            f"Connection Timeout=30;"    
+            CONN_STR
         )
         
-
         if result == 1:
             conn.close()
             return {"status": "Connection OK"}
