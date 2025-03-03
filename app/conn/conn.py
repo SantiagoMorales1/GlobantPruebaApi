@@ -1,5 +1,4 @@
 from decouple import config 
-import os
 
 STORAGE_ACCOUNT = config("STORAGE_ACCOUNT", default=None)
 CONTAINER = config("CONTAINER", default=None)
@@ -13,3 +12,4 @@ CLIENT_SECRET = config("CLIENT_SECRET", default=None)
 UID = config("UID", default=None)
 PWD = config("PWD", default=None)
 CONN_STR = config("CONN_STR", default=None)
+ENV = config("ENV", default=None)

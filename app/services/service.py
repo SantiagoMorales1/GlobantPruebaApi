@@ -13,7 +13,7 @@ from azure.identity import ManagedIdentityCredential
 import pyodbc
 from sqlalchemy import create_engine
 
-from app.conn.conn import DRIVER, STORAGE_ACCOUNT, CONTAINER, SERVER, DATABASE, UID, PWD, CONN_STR
+from app.conn.conn import DRIVER, STORAGE_ACCOUNT, CONTAINER, SERVER, DATABASE, UID, PWD, CONN_STR, ENV
 
 #Conexion a Azure sotrage account
 
@@ -35,15 +35,21 @@ def get_conn_sql_service(result=1):
     try:
       
         # Get Azure AD token
-        #credential = ManagedIdentityCredential()
-        #token = credential.get_token("https://database.windows.net/.default").token
-        #access_token_bytes = token.encode("utf-16-le") 
+        if (ENV == 1):
+            
+            #credential = ManagedIdentityCredential()
+            #token = credential.get_token("https://database.windows.net/.default").token
+            #access_token_bytes = token.encode("utf-16-le") 
 
-        # Connect using pyodbc with Managed Identity
-
-        conn = pyodbc.connect(
-            CONN_STR
-        )
+            # Connect using pyodbc with Managed Identity
+            #SQLCONNSTR_CONN_STR = CONN_STR
+            conn = pyodbc.connect(                
+                SQLCONNSTR_CONN_STR,                
+            )
+        else:
+            conn = pyodbc.connect(
+                CONN_STR
+            )
         
         if result == 1:
             conn.close()
