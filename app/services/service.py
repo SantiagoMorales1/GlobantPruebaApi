@@ -39,16 +39,25 @@ def get_conn_sql_service(result=1):
             
             #credential = ManagedIdentityCredential()
             #token = credential.get_token("https://database.windows.net/.default").token
-            #access_token_bytes = token.encode("utf-16-le") 
+            #access_token_bytes = token.encode("utf-16-le")             
+                        
 
-            # Connect using pyodbc with Managed Identity
-            #SQLCONNSTR_CONN_STR = CONN_STR
-            conn = pyodbc.connect(                
-                SQLCONNSTR_CONN_STR,                
-            )
+            # Uncomment the following lines according to the authentication type.
+            # For system-assigned managed identity.
+            connString = f'Driver={DRIVER};Server={SERVER};Database={DATABASE};Authentication=ActiveDirectoryMsi;Encrypt=yes;'
+      
+            conn = pyodbc.connect(connString)
+          
         else:
             conn = pyodbc.connect(
-                CONN_STR
+                f"Driver={DRIVER};"
+                f"Server={SERVER};"
+                f"Database={DATABASE};"
+                f"Uid={UID};"
+                f"Pwd={PWD};"
+                f"Encrypt=yes;"
+                f"TrustServerCertificate=no;"
+                f"Connection Timeout=30;"
             )
         
         if result == 1:
