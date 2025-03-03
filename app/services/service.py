@@ -40,16 +40,18 @@ def get_conn_sql_service(result=1):
         access_token_bytes = token.encode("utf-16-le") 
 
         # Connect using pyodbc with Managed Identity
-        conn = pyodbc.connect(
-            f"DRIVER={{ODBC Driver 18 for SQL Server}};"
-            f"SERVER=tcp:{SERVER},1433;"  # Ensure port 1433 is included
-            f"DATABASE={DATABASE};"
-            f"Encrypt=yes;"
-            f"TrustServerCertificate=no;",  
-            #f"Authentication=ActiveDirectoryMsi",
-            attrs_before={1256: access_token_bytes}  # Ensure token is passed correctly
-        )       
 
+
+        conn = pyodbc.connect(
+            f"Driver={{ODBC Driver 18 for SQL Server}};"
+            f"Server=tcp:globanpruebaserver202502.database.windows.net,1433;"
+            f"Database=globantpruebadb;"
+            f"Uid=globantpruebaapiapp;"
+            f"Encrypt=yes;"
+            f"TrustServerCertificate=no;"
+            f"Connection Timeout=30;"
+            f"Authentication=ActiveDirectoryIntegrated"    
+        )
         if result == 1:
             conn.close()
             return {"status": "Connection OK"}
