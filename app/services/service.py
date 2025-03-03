@@ -13,7 +13,7 @@ from azure.identity import ManagedIdentityCredential
 import pyodbc
 from sqlalchemy import create_engine
 
-from app.conn.conn import STORAGE_ACCOUNT, CONTAINER, SERVER, DATABASE, UID, PWD
+from app.conn.conn import DRIVER, STORAGE_ACCOUNT, CONTAINER, SERVER, DATABASE, UID, PWD
 
 #Conexion a Azure sotrage account
 
@@ -35,23 +35,25 @@ def get_conn_sql_service(result=1):
     try:
       
         # Get Azure AD token
-        credential = ManagedIdentityCredential()
-        token = credential.get_token("https://database.windows.net/.default").token
-        access_token_bytes = token.encode("utf-16-le") 
+        #credential = ManagedIdentityCredential()
+        #token = credential.get_token("https://database.windows.net/.default").token
+        #access_token_bytes = token.encode("utf-16-le") 
 
         # Connect using pyodbc with Managed Identity
 
 
         conn = pyodbc.connect(
-            f"Driver={{ODBC Driver 18 for SQL Server}};"
-            f"Server=tcp:globanpruebaserver202502.database.windows.net,1433;"
-            f"Database=globantpruebadb;"
-            f"Uid=globantpruebaapiapp;"
+            f"Driver={DRIVER};"
+            f"Server={SERVER};"
+            f"Database={DATABASE};"
+            f"Uid={UID};"
+            f"Pwd={PWD};"
             f"Encrypt=yes;"
             f"TrustServerCertificate=no;"
-            f"Connection Timeout=30;"
-            f"Authentication=ActiveDirectoryIntegrated"    
+            f"Connection Timeout=30;"    
         )
+        
+
         if result == 1:
             conn.close()
             return {"status": "Connection OK"}
