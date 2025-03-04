@@ -22,8 +22,8 @@ logger = logging.getLogger(__name__)
 def get_conn_blob():
 
     #USING CON MANGMENT IDNETITY
-    #credential = DefaultAzureCredential()
-    credential = ManagedIdentityCredential()
+    credential = DefaultAzureCredential()
+    #credential = ManagedIdentityCredential()
     account_url = f"https://{STORAGE_ACCOUNT}.blob.core.windows.net"
     blob_service_client = BlobServiceClient(account_url, credential)
     
@@ -52,9 +52,9 @@ def get_conn_sql_service(result=1):
                 f"Connection Timeout=30;"
             )
         
-        if result == 1:
+        if result == 1:           
             conn.close()
-            return {"status": "Connection OK"}
+            return {"status": "Connection OK"}            
         else:            
             return conn
 
@@ -202,7 +202,7 @@ def Insertar_csv_azure (file_name: str):
         
             #cursor.execute(bulk_sql)
             #conn.commit()
-
+                       
             engine = create_engine(f"mssql+pyodbc://{UID}:{PWD}@{SERVER}/{DATABASE}?driver=ODBC+Driver+18+for+SQL+Server")
             df.to_sql(table_name, engine, if_exists="append", index=False)
             inserted_rows = len(df)
@@ -216,3 +216,41 @@ def Insertar_csv_azure (file_name: str):
         #finally:
             #cursor.close()
             #conn.close()
+
+
+def get_view_hired_employees_by_quarter_service():
+    
+    conn = get_conn_sql_service(0)
+    cursor = conn.cursor()
+    
+    query = "SELECT * FROM HIRED_EMPLOYES_PER_QUARTER ORDER BY department, job"
+    cursor.execute(query)
+    
+    # Fetch all data
+    columns = [column[0] for column in cursor.description]
+    data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    
+    cursor.close()
+    conn.close()
+
+    print("Query Ok")
+    return data
+
+
+def get_view_rank_employees_hired_by_mean_service ():
+    
+    conn = get_conn_sql_service(0)
+    cursor = conn.cursor()
+    
+    query = "SELECT * FROM RANK_EMPLOYES_HIRED_MEAN ORDER BY hired DESC"
+    cursor.execute(query)
+    
+    # Fetch all data
+    columns = [column[0] for column in cursor.description]
+    data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    
+    cursor.close()
+    conn.close()
+
+    print("Query Ok")
+    return data
